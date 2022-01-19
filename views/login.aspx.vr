@@ -1,6 +1,4 @@
-﻿ 
-
-// This is the code-behind for the Login.aspx page. That page and this code 
+﻿// This is the code-behind for the Login.aspx page. That page and this code 
 // implement ASP.NET's Forms Authentication for this app. 
 
 // * [Microsoft's Forms Authentication docs](https://support.microsoft.com/en-us/help/301240/how-to-implement-forms-based-authentication-in-your-asp-net-applicatio)
@@ -9,7 +7,6 @@
  
 Using System
 Using System.Data
-//Using System.Configuration
 Using System.Collections
 Using System.Web
 Using System.Web.Security
@@ -51,6 +48,18 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         DclSrParm User     Type(*String) 
         DclSrParm Password Type(*String) 
 
+        // Returning *Nothing means the user was authenticated. 
+        // Otherwise, return the exception raised when login failed.
+
+        // For demo purposes, emergency user credentials in case our IBM i 
+        // isn't available. 
+        // -----------------------------------------
+        // Remove this If/EndIf for production code! 
+        // -----------------------------------------
+        If User = 'godzilla' AND Password = 'mothra'
+            LeaveSr *Nothing
+        EndIf 
+
         DGDB.DBName = Application['dbname'].ToString()
         DGDB.User = User
         DGDB.Password = Password
@@ -70,18 +79,6 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         DclSrParm sender Type(*Object)
         DclSrParm e Type(System.EventArgs)
 
-        //DclFld CurrentMaster Type(MasterPageNoNav) 
-
-        // Set page title. 
-        //Page.Title = 'Login'
-
-        //CurrentMaster = *This.Master *As MasterPageNoNav
-        // ChildPage always contains the name of the current ASPX page. 
-        // For example here ChildPage will be 'login.aspx.' It's sometimes 
-        // handy to easily have this value available.
-        //CurrentMaster.ChildPage = *New FileInfo(*This.Request.Url.LocalPath).Name.ToLower()
-
-        // Set page heading in the navbar. 
         *This.Title = 'App Login'
     EndSr
 
@@ -90,19 +87,6 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         DclSrParm e Type(System.EventArgs)
 
     EndSr
-
-    // If validating a user against a data store:
-    // Check for existence of user and password in a data store.
-    // If that function returns true, the user/password validated and that user is 
-    // logged in. This user is independent of the IBM i and its users. A general 
-    // user profile and password connects the app to the IBM i. (This means WRKACTJOB
-    // shows many of the same user). 
-       
-    // If validating a user with IBM i credentials. 
-    // Check that a user can connect with the given credentials.
-    // This technique should generally only be used for Web apps that 
-    // will be used by internal users whom you know already have 
-    // an IBM i account. 
 
     BegSr buttonlogin_Click Access(*Private) Event(*This.buttonlogin.Click)
         DclSrParm sender Type(*Object)

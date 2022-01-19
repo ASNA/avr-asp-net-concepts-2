@@ -14,24 +14,12 @@ BegClass MasterPageNav Partial(*Yes) Access(*Public) Extends(System.Web.UI.Maste
 
 	DclProp ChildPage Type(*String) Access(*Public)
 	
-    DclProp PageHeading Type(*String) Access(*Public) 
-
-//	DclFld _PageHeading Type(*String) Inz('Default page heading')
-//	BegProp PageHeading Type(*String) Access(*Public) 
-//		BegGet
-//			LeaveSr _PageHeading
-//		EndGet
-//		BegSet	
-//			_PageHeading = *PropVal
-//		EndSet
-//
-//	EndProp
 
     BegSr Page_Load Access(*Private) Event(*This.Load)
         DclSrParm sender Type(*Object)
         DclSrParm e Type(System.EventArgs)
 
-        *This.ChildPage = Page.AppRelativeVirtualPath.ToLower() // = ~/views/Index.aspx
+        *This.ChildPage = Page.AppRelativeVirtualPath.ToLower() // gets page in this format: ~/views/Index.aspx
 
         If (NOT IsPostBack)
             //
@@ -44,18 +32,6 @@ BegClass MasterPageNav Partial(*Yes) Access(*Public) Extends(System.Web.UI.Maste
         EndIf
     EndSr
 
-	
-//	BegSr SetChildPage Access(*Public) 
-//		DclSrParm PageName Type(*String) 
-//
-//		ChildPage = PageName 
-//	EndSr
-//
-//	BegSr SetPageHeading Access(*Public) 
-//		DclSrParm NewPageHeading Type(*String) 
-//
-//		PageHeading = NewPageHeading
-//	EndSr
-    
+   
 
 EndClass
