@@ -1,5 +1,39 @@
 # ASP.NET WebForms concepts 2 #
 
+### Master pages
+
+Set document type to HTML 5 on all master pages
+
+```
+<!DOCTYPE html>
+```
+
+Recommended content placeholders
+
+- "Head" - at bottom of master page Head tag. This is for injecting anything from a content page that needs to be in the Head tag.
+- "Content" - main content placeholder. Location dictated by CSS and HTML
+- "pageScripts" - just above Body tag. This is primarily for injecting JavaScript from a content page.
+
+Content page events fire first then master page events fire
+
+Add ChildPage property
+
+- By default, a master page doesn't know what content page it is displaying. Adding a public ChildPage property fixes that. Add this code in the master page's PageLoad event hander:
+
+```
+// gets page in this format: ~/views/Index.aspx
+*This.ChildPage = Page.AppRelativeVirtualPath.ToLower()
+```
+
+Discuss conditional code (`<% ... %>`) in the master page.
+
+Install Bootstap from download
+
+Add JavaScript for master page
+
+- The `removeAspNetCheckboxWrapper` method removes some markup that ASP.NET checkbox and radio buttons generate. This lets those two controls work with Bootstrap CSS. If you're not using Bootstrap, this may not be necessary.
+- We'll see this code in action in the `login.aspx` page.
+
 ### web.config
 
 AppSettings
@@ -22,7 +56,7 @@ AppSettings
 </appSettings>
 ```
 
-You fetch AppSettings with the System.Configuration.ConfigurationManager class's AppSettings property (which is a NameValueCollection type)
+You fetch appSettings with the `System.Configuration.ConfigurationManager` class's appSettings property (which is a NameValueCollection type)
 
 ```
 DclFld ActiveDBNameKey  Type(*String)
@@ -39,7 +73,7 @@ Enabling debug in web.config
     <compilation debug="true"/>
 ```
 
-It is very important to set ```debug``` to ```false``` before deploying the application to production. Debug mode disables all caching and a production application runs faster with caching enabled.
+It is very important to set `debug` to `false` before deploying the application to production. Debug mode disables all caching and a production application runs faster with caching enabled.
 
 Disable Microsoft's BrowserLink
 
@@ -85,23 +119,65 @@ Global.asax links
 - https://stackoverflow.com/questions/2340572/what-is-the-purpose-of-global-asax-in-asp-net
 - https://docs.microsoft.com/en-us/previous-versions/aspnet/ms178473(v=vs.100)
 
-### Master pages
-
-Content page events fire first then master page events fire
-
-Content placeholders
-
-Set document type to HTML 5 on all master pages
-
-```
-<!DOCTYPE html>
-```
-
 ### User authentication
 
 Change web.config
 
+- Add this code as an immediately child of the `<configuration>` element:
+
+```
+<system.webServer>
+    <modules runAllManagedModulesForAllRequests="true" />
+</system.webServer>
+```
+
+Note: If there is already a `<system.webServer>` element in your web.config, add the `<modules...` element inside it.
+
+Add this code immediately under the `<system.web>` element:
+
+```
+<authentication mode="Forms">
+  <forms name="Loginform" loginUrl="views/login.aspx" timeout="30"/>
+  <!-- 
+    // The timeout value is specified in minutes. 
+    // This value also determines how long the authentication cookie, if used,
+    // persists.
+    -->
+</authentication>
+```
+
+The session timeout value is specified in minutes. Generally you'll want this to be at least 20 minutes.
+
+Add this code immediately after the `<authentication>` element. It disables _all_ pages from unauthenticated users.
+
+```
+<authorization>
+    <deny users="?"/>
+</authorization>
+```
+
+Where `?` means "unauthenticated users"
+
+Add this code immediately after the `<system.web>` element. It adds exceptions to what pages are available to unauthenticated users.
+
+```  
+<location path="public">
+    <system.web>
+      <authorization>
+        <allow users="?"/>
+      </authorization>
+    </system.web>
+</location>
+```
+
+[MS forms authentication docs](https://docs.microsoft.com/en-US/troubleshoot/developer/webapps/aspnet/development/forms-based-authentication)
+
 Add login page with UI
+
+- Discuss validator controls
+   - [MS Validator control docs](https://docs.microsoft.com/en-us/previous-versions/aspnet/debza5t0(v=vs.100))
+
+Add logic for authenticating user
 
 ### Global error handling
 
