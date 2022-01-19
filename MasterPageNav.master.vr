@@ -13,7 +13,6 @@ Using System.Web.UI.HtmlControls
 BegClass MasterPageNav Partial(*Yes) Access(*Public) Extends(System.Web.UI.MasterPage)
 
 	DclProp ChildPage Type(*String) Access(*Public)
-	
 
     BegSr Page_Load Access(*Private) Event(*This.Load)
         DclSrParm sender Type(*Object)
