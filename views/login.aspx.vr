@@ -125,6 +125,7 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         // In most forms, you'd test some logic here to see if the custom validator 
         // failed. In this case, if control gets here the page wasn't redirected with the 
         // FormsAuthentication class which means there is an error. 
+        // This code is executed only if JavaScript is 
         args.IsValid = *False 				
     EndSr
 

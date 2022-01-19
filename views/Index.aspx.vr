@@ -40,4 +40,15 @@ BegClass Index Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
     EndSr
 		
 	
+	BegSr linkbuttonUnhandledException_Click Access(*Private) Event(*This.linkbuttonUnhandledException.Click)
+		DclSrParm sender Type(*Object)
+		DclSrParm e Type(System.EventArgs)
+
+        DclFld Divisor Type(*Integer4) Inz(0)
+        DclFld Number Type(*Integer4) Inz(55) 
+        DclFld Result Type(*Integer4) 
+
+        Result = Number / Divisor
+		
+	EndSr
 EndClass

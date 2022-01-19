@@ -40,6 +40,9 @@
                     Active customer
                 </label>
             </div>
+           <div>
+               <asp:LinkButton ID="linkbuttonUnhandledException" runat="server">Cause unhandled exception</asp:LinkButton>
+           </div>
         </div>
 
    </main>
