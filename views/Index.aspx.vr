@@ -18,7 +18,7 @@ BegClass Index Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
 
 
         If (NOT Page.IsPostBack)
-            //*This.Title = "Roger"
+            *This.Title = "Home"
 
             //
             // Called the first time that the page is loaded.

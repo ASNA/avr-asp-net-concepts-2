@@ -49,10 +49,8 @@
             guid = System.Guid.NewGuid()
             ErrorKey = guid.ToString()
 
-            If OuterError *Is System.Web.HttpUnhandledException
-                Application[ErrorKey] = InnerError <> *Nothing ? InnerError : OuterError
-                Server.TransferRequest('~/views/system/Error.aspx?error=' + ErrorKey, *True)
-            EndIf 
+            Application[ErrorKey] = InnerError <> *Nothing ? InnerError : OuterError
+            Server.TransferRequest('~/views/system/Error.aspx?error=' + ErrorKey, *True)
         EndIf 
 	EndSr
 

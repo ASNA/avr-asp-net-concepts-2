@@ -40,12 +40,13 @@
                     Active customer
                 </label>
             </div>
+        </div>
+   </main>
+
            <div>
                <asp:LinkButton cssClass="mt-5" ID="linkbuttonUnhandledException" runat="server">Cause unhandled exception</asp:LinkButton>
            </div>
-        </div>
 
-   </main>
   
    <footer>
        footer
