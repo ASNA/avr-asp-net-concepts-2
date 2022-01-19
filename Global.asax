@@ -27,9 +27,33 @@
 	BegSr Application_Error
 		DclSrParm sender Type(*Object)
 		DclSrParm e Type(EventArgs)
+        
+        DclFld OuterError Type(System.Exception)
+        DclFld InnerError Type(System.Exception)
+        DclFld guid Type(System.Guid)
+        DclFld ErrorKey Type(*String) 
+        DclFld HttpStatusCode Type(*Integer4) 
+     
+        OuterError = Server.GetLastError()
 
-		// Code that runs when an unhandled error occurs
+        HttpStatusCode = (OuterError *As HttpException).GetHttpCode()
+        If HttpStatusCode = 404
+            Server.ClearError()
+            Response.Redirect('~/views/system/PageNotFound.aspx?page=' + Context.Request.FilePath) 
+        Else
+            If OuterError.InnerException <> *Nothing 
+                InnerError = OuterError.InnerException
+            EndIf 
+            Server.ClearError()
 
+            guid = System.Guid.NewGuid()
+            ErrorKey = guid.ToString()
+
+            If OuterError *Is System.Web.HttpUnhandledException
+                Application[ErrorKey] = InnerError <> *Nothing ? InnerError : OuterError
+                Server.TransferRequest('~/views/system/Error.aspx?error=' + ErrorKey, *True)
+            EndIf 
+        EndIf 
 	EndSr
 
 	BegSr Session_Start

@@ -41,7 +41,7 @@
                 </label>
             </div>
            <div>
-               <asp:LinkButton ID="linkbuttonUnhandledException" runat="server">Cause unhandled exception</asp:LinkButton>
+               <asp:LinkButton cssClass="mt-5" ID="linkbuttonUnhandledException" runat="server">Cause unhandled exception</asp:LinkButton>
            </div>
         </div>
 
