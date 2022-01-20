@@ -12,7 +12,7 @@
         <div class="form-group mt-3">
             <label for="password">Password</label>
             <asp:TextBox placeholder="password" CssClass="form-control" ID="password" runat="server" TextMode="Password"></asp:TextBox>
-            <asp:RequiredFieldValidator CssClass="form-text error-message" ID="passwordRequiredValidator" ControlToValidate="user" runat="server" ErrorMessage="Please enter your password" Display="Dynamic"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator CssClass="form-text error-message" ID="passwordRequiredValidator" ControlToValidate="password" runat="server" ErrorMessage="Please enter your password" Display="Dynamic"></asp:RequiredFieldValidator>
         </div>
         <div class="form-group form-check mt-3">
             <asp:CheckBox CssClass="form-check-input" ID="rememberme" runat="server" ClientIDMode="Static" />

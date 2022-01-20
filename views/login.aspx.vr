@@ -25,9 +25,9 @@ Using System.IO
 
 BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
 
-    DclDB DGDB
+    DclDB DGDB 
 
-    BegFunc CheckWebUserCredentials Type(*Boolean)
+    BegFunc CheckWebUserCredentials  Type(System.Exception) 
         DclSrParm User     Type(*String) 
         DclSrParm Password Type(*String) 
 
@@ -36,15 +36,20 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         // has user_id and hash_password columns (at least). Check this 
         // table for a user's row and compare the hash_password value against
         // the hashed value of the password the user provided. 
+
+        // Harded value for testing. 
+        If User = 'godzilla' AND Password = 'mothra'
+            LeaveSr *Nothing
+        Else 
+            LeaveSr *New ArgumentException("Web user login failed") 
+        EndIf 
         
         // Don't store passwords in plain text! Store only [hashed, salted passwords](https://auth0.com/blog/hashing-passwords-one-way-road-to-security/)
         // in your data store. 
-
-        // This is no test here so everyone gets validated. 
-        LeaveSr *True 
     EndFunc 
     
-    BegFunc CheckIBMiCredentials Type(ASNA.DataGate.Common.dgException) 
+    //BegFunc CheckIBMiCredentials Type(ASNA.DataGate.Common.dgException) 
+    BegFunc CheckIBMiCredentials Type(System.Exception) 
         DclSrParm User     Type(*String) 
         DclSrParm Password Type(*String) 
 
@@ -56,17 +61,14 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         // -----------------------------------------
         // Remove this If/EndIf for production code! 
         // -----------------------------------------
-        If User = 'godzilla' AND Password = 'mothra'
-            LeaveSr *Nothing
-        EndIf 
-
         DGDB.DBName = Application['dbname'].ToString()
         DGDB.User = User
         DGDB.Password = Password
 
         Try 
             Connect DGDB 
-        Catch ex Type(ASNA.DataGate.Common.dgException)
+        //Catch ex Type(ASNA.DataGate.Common.dgException)
+        Catch ex Type(System.Exception)
             LeaveSR ex 
         Finally
             Disconnect DGDB 
@@ -92,11 +94,15 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         DclSrParm sender Type(*Object)
         DclSrParm e Type(System.EventArgs)
 
-        DclFld ex Type(ASNA.DataGate.Common.dgException) 
+        DclFld ex Type(System.Exception)
 
-
+        // User either CheckIBMiCredentials or CheckWebUserCredentials:
         // Check credentials against IBM i.
         ex = CheckIBMiCredentials(user.Text, password.Text)
+        
+        // Check Web user credentials.
+        // ex = CheckWebUserCredentials(user.Text, password.Text)
+
         // The user was validated if no exception was thrown.
         If ex = *Nothing 
             // After validating a user, RedirectFromLoginPage redirects
@@ -110,12 +116,6 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
                 LoginFailedValidator.ErrorMessage = 'Login failed'
             EndIf
         EndIf
-
-        // Alternatively, check credentials against a data store.
-        //- If (CheckCredentials(user.text, password.text)
-        //-    FormsAuthentication.RedirectFromLoginPage(user.Text, rememberme.Checked) 
-        //- EndIf
-
     EndSr
 
     BegSr loginFailedValidator_ServerValidate Access(*Private) Event(*This.loginFailedValidator.ServerValidate)
@@ -125,7 +125,7 @@ BegClass views_login Partial(*Yes) Access(*Public) Extends(System.Web.UI.Page)
         // In most forms, you'd test some logic here to see if the custom validator 
         // failed. In this case, if control gets here the page wasn't redirected with the 
         // FormsAuthentication class which means there is an error. 
-        // This code is executed only if JavaScript is 
+        // This code is executed only if JavaScript is disabled in the browser.
         args.IsValid = *False 				
     EndSr
 

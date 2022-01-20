@@ -13,7 +13,6 @@
         ActiveDBNameKey = System.Configuration.ConfigurationManager.AppSettings["DefaultDBName"]
         DBName = System.Configuration.ConfigurationManager.AppSettings[ActiveDBNameKey]
         Application['dbname'] = DBName
-
 	EndSr
 
 	BegSr Application_End
@@ -57,8 +56,6 @@
 	BegSr Session_Start
 		DclSrParm sender Type(*Object)
 		DclSrParm e Type(EventArgs)
-
-		// Code that runs when a new session is started
 
 	EndSr
 

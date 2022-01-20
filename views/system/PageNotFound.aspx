@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <img src="../../images/homer.png" alt="Alternate Text" />
+        <img src="../../public/images/homer.png" alt="Alternate Text" />
     </div>        
     <div>
     <h3>Page not found</h3>
